@@ -7,7 +7,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import crypto from "crypto";
 import validator from "validator";
 import nodemailer from "nodemailer";
-import sanitizeText from "./sanitizeTextInputs";
+import sanitizeText from "../utils/sanitizeTextInputs";
 
 /* ===================== CONFIG ===================== */
 const app = express();
