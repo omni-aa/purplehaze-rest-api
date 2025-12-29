@@ -64,4 +64,18 @@ export async function authRoutes(fastify: FastifyInstance) {
             return reply.status(500).send({ error: 'Internal server error' });
         }
     });
+    fastify.post('/sign-in', async (request: FastifyRequest, reply: FastifyReply) => {
+        const validateData = signupSchema.parse(request.body as any);
+
+
+
+
+    });
+    fastify.post('/password-reset', async (request: FastifyRequest, reply: FastifyReply) => {
+
+    });
+    fastify.post('/password-reset-request', async (request: FastifyRequest, reply: FastifyReply) => {
+
+    });
+
 }
