@@ -11,7 +11,7 @@ import sanitizeText from "../utils/sanitizeTextInputs";
 
 /* ===================== CONFIG ===================== */
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "dev_super_secret_key_change_me";
 const SALT_ROUNDS = 10;
 

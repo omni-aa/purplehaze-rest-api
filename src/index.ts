@@ -1,41 +1,45 @@
-﻿import Fastify from "fastify"
-import cors from '@fastify/cors'
-import cookie from '@fastify/cookie'
-import dotenv from 'dotenv'
-import {authRoutes} from "./routes/authRoutes/authRoutes";
-import {dashboardRoutes} from "./routes/dashboardRoutes/dashboardRoutes";
-dotenv.config()
+﻿import dotenv from 'dotenv';
+dotenv.config(); // must be first
 
+import Fastify from "fastify";
+import cors from '@fastify/cors';
+import cookie from '@fastify/cookie';
+import { authRoutes } from "./routes/authRoutes/authRoutes";
+import { dashboardRoutes } from "./routes/dashboardRoutes/dashboardRoutes";
 
-const fastify = Fastify({
-    logger: true
-})
+const fastify = Fastify({ logger: true });
 
-
-
-fastify.register(cookie);
-// Health check
-fastify.get('/health', async () => {
-    return { status: 'OK', timestamp: new Date().toISOString() };
+// ======= CORS =======
+fastify.register(cors, {
+    origin: process.env.FRONTEND_URL || true, // allow frontend URL
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 });
 
+// ======= Cookies =======
+fastify.register(cookie);
 
-fastify.register(authRoutes, {prefix: '/auth'});
-fastify.register(dashboardRoutes, {prefix: '/dashboard'});
+// ======= Health check =======
+fastify.get('/health', async () => ({
+    status: 'OK',
+    timestamp: new Date().toISOString()
+}));
 
+// ======= Routes =======
+fastify.register(authRoutes, { prefix: '/auth' });
+fastify.register(dashboardRoutes, { prefix: '/dashboard' });
 
-
-
-
+// ======= Server start =======
 const start = async () => {
-    try{
-        await fastify.listen({port:3000, host:'localhost'});
-        console.log("Server started on port 3000");
-    }catch(e){
-        fastify.log.error(e);
+    try {
+        const port = Number(process.env.PORT) || 3000;
+        await fastify.listen({ port, host: '0.0.0.0' }); // listen on all interfaces
+        console.log(`Server started on http://localhost:${port}`);
+    } catch (err) {
+        fastify.log.error(err);
         process.exit(1);
     }
-}
+};
 
-start()
-
+start();
