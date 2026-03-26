@@ -1,1 +1,1 @@
-﻿npx tsx src/index.ts
+﻿npx tsx src/index.ts 
